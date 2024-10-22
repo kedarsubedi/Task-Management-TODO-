@@ -1,0 +1,80 @@
+{% extends '_base.html' %} {% load static %} {% block title %}Login{% endblock title %} {%block css %} {% endblock css %} {% block content %}
+<div class="container d-flex justify-content-center text-white">
+  <div
+    class="card p-3 mt-5 shadow"
+    style="
+      width: 30rem;
+      background: transparent;
+      border: 2px solid rgb(251, 86, 86);
+    "
+  >
+    <div class="card-header d-flex justify-content-center bg-primary">
+      <h1>Login Page</h1>
+    </div>
+    <form method="POST" action="">
+      {% csrf_token %}
+      <div class="form-group">
+        <div class="row my-1">
+          <div class="col-lg-12">
+            <label for="id_username">Username</label>
+            <input
+              type="text"
+              id="id_username"
+              name="username"
+              class="form-control"
+              placeholder="Enter Username...."
+            />
+          </div>
+          <div class="col-lg-12">
+            <label for="id_password1">Password</label>
+            <div class="input-group">
+              <input
+                type="password"
+                id="id_password1"
+                name="password"
+                class="form-control"
+                placeholder="Enter password....."
+              />
+              <div class="input-group-append">
+                <div class="input-group-text" id="passwordToggler">
+                  <span class="fas fa-eye"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12 d-flex justify-content-end mt-2">
+            <button type="submit" class="btn btn-secondary">Login</button>
+          </div>
+          <div class="col-lg-12">{% include 'includes/messages.html' %}</div>
+          <div class="col-lg-12 d-flex justify-content-center">
+            I already have an account!
+            <a href="{% url 'register_page' %}" class="ml-1">Register </a>
+          </div>
+          <div class="col-lg-12 d-flex justify-content-center">
+            <a href="{% url 'reset_password' %}" class="ml-1">Forget Password? </a>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock content %} {% block js %}
+<script>
+  function togglerPassword(togglerId, pwdFieldId) {
+    var toggler_div = document.getElementById(togglerId);
+    var pwdFieldId = document.getElementById(pwdFieldId);
+
+    toggler_div.addEventListener("click", function () {
+      if (pwdFieldId.type == "password") {
+        toggler_div.innerHTML = '<span class="fas fa-eye-slash"></span>';
+        pwdFieldId.type = "text";
+      } else {
+        toggler_div.innerHTML = '<span class = "fas fa-eye"></span>';
+        pwdFieldId.type = "password";
+      }
+    });
+  }
+  togglerPassword("passwordToggler", "id_password1");
+</script>
+{% endblock js %}

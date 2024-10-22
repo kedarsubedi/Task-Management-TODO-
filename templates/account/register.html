@@ -1,0 +1,89 @@
+{% extends '_base.html' %} {% load static %} {% block title %}Register Page{%endblock title %} {%block css %} {% endblock css %} {% block content %}
+<div class="container d-flex justify-content-center text-white">
+  <div
+    class="card p-3 mt-5"
+    style="width: 50rem; background: transparent; border: 2px solid white"
+  >
+    <div class="card-header d-flex justify-content-center bg-primary">
+      <h1 class="">Registration</h1>
+    </div>
+    <form method="POST" action="">
+      {% csrf_token %}
+      <div class="form-group">
+        <div class="row">
+          <div class="col-lg-6">
+            <label for="id_username">Username</label>
+            {{form.username}}
+          </div>
+          <div class="col-lg-6">
+            <label for="id_email">Email</label>
+            {{form.email}}
+          </div>
+          <div class="col-lg-12">
+            <label for="id_password1">Password</label>
+            <div class="input-group">
+              {{form.password1}}
+              <div class="input-group-append">
+                <div class="input-group-text" id="passwordToggler">
+                  <span class="fas fa-eye"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <label for="id_password2">Re-Password</label>
+            <div class="input-group">
+                {{form.password2}}
+                <div class="input-group-append">
+                    <div class="input-group-text" id="passwordToggler2">
+                        <span class="fas fa-eye"></span>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="col-lg-12 d-flex justify-content-end mt-2">
+            <button type="submit" class="btn btn-primary">Register</button>
+          </div>
+          <div class="col-lg-12">{% include 'includes/messages.html' %}</div>
+          <div class="col-lg-12 d-flex justify-content-center">
+            I already have an account!
+            <a href="{% url 'login_page' %}" class="ml-1">Login </a>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock content %} {% block js %}
+<!-- <script>
+    //Query all input fields
+    var form_fields = document.getElementByTagName('input')
+    form_fields[1].placeholder='Username..';
+    form_fields[2].placeholder='Email..';
+    form_fields[3].placeholder='Enter password...';
+    form_fields[4].placeholder='Re-enter password...';
+
+    for (var field in form_fields){
+        form_fields[field].className += 'form-control'
+    }
+</script> -->
+<script>
+  function togglerPassword(togglerId, pwdFieldId) {
+    var toggler_div = document.getElementById(togglerId);
+    var pwdFieldId = document.getElementById(pwdFieldId);
+
+    toggler_div.addEventListener("click", function () {
+      if (pwdFieldId.type == "password") {
+        toggler_div.innerHTML = '<span class="fas fa-eye-slash"></span>';
+        pwdFieldId.type = "text";
+      } else {
+        toggler_div.innerHTML = '<span class = "fas fa-eye"></span>';
+        pwdFieldId.type = "password";
+      }
+    });
+  }
+  togglerPassword("passwordToggler", "id_password1");
+  togglerPassword("passwordToggler2", "id_password2");
+</script>
+{% endblock js %}

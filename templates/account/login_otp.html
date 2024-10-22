@@ -1,0 +1,36 @@
+{% extends '_base.html' %} {% load static %} {% block title %}Login{% endblock title %} {%block css %} {% endblock css %} {% block content %}
+<div class="container d-flex justify-content-center text-white">
+  <div
+    class="card p-3 mt-5 shadow"
+    style="
+      width: 30rem;
+      background: transparent;
+      border: 2px solid rgb(251, 86, 86);
+    "
+  >
+    <div class="card-header d-flex justify-content-center bg-primary">
+      <h1>Enter OTP</h1>
+    </div>
+    <form method="POST" action="">
+      {% csrf_token %}
+      <div class="form-group mt-2">
+        <div class="row">
+          <div class="col-lg-12">
+            <input
+              type="text"
+              id="id_otp"
+              name="otp"
+              class="form-control"
+              placeholder="Enter otp...."
+            />
+          </div>
+          <div class="col-lg-12 d-flex justify-content-end mt-2">
+            <button type="submit" class="btn btn-secondary">Submit</button>
+          </div>
+          <div class="col-lg-12">{% include 'includes/messages.html' %}</div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock content %}

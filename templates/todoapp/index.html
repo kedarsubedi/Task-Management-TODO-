@@ -1,0 +1,152 @@
+{% extends '_base.html' %} {% block title %}Todo List{% endblock title %}Todo
+List {% block content %}
+<div class="container py-5 h-100">
+  <div class="d-flex justify-content-center align-items-center h-100">
+    <div class="col-lg-9">
+      <div class="card rounded-3">
+        <div class="card-body p-4">
+          <div class="row">
+            <div class="col-lg-6 font-weight-bold">
+              <!-- {% if request.user.is_authenticated%}  -->
+              <span>Hello, {{request.user}} </span>
+            </div>
+            <div class="col-lg-6 d-flex justify-content-end">
+              <a href="{% url 'logout' %}" title="Logout">
+                <i class="fa fa-sign-out text-danger" aria-hidden="true"></i>  
+              </a>
+              <!-- {% else %} -->
+              <!-- {% endif %} -->
+            </div>
+          </div>
+          {% include 'includes/messages.html' %}
+          <h2 class="text-center my-3 pb-3">To do App</h2>
+          {% if todo %}
+          <form
+            method="POST"
+            class="form-group justify-content-center align-items-center mb-4 pb-1"
+            action="{% url 'update_todo' todo.id %}"
+          >
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-lg-10">
+                <div class="form-outline">
+                  <input
+                    name="taskfield"
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter your Task Here"
+                    value="{{todo.tasks}}"
+                  />
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <button type="" class="btn btn-primary">Update</button>
+              </div>
+            </div>
+          </form>
+          {% else %}
+          <form
+            method="POST"
+            class="form-group justify-content-center align-items-center mb-4 pb-1"
+            action="{% url 'todoapp_view' %}"
+          >
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-lg-10">
+                <div class="form-outline">
+                  <input
+                    name="taskfield"
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter your Task Here"
+                  />
+                  <span class="error-msg">{{msg}}</span>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <button type="" class="btn btn-primary">Create</button>
+              </div>
+            </div>
+          </form>
+          {% endif %}
+          <table class="table table-striped">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">S.N.</th>
+                <th scope="col">Todo Item</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            {% for listask in listasks %}
+            <tbody>
+              <tr>
+                <td>{{listask.id}}</td>
+                <td>{{listask.tasks}}</td>
+                <td>
+                  <a href="{% url 'todoapp_view' %}?todoId={{listask.id}}" title="edit">
+                    <i class="fa-solid fa-pen-to-square mx-2 fa-lg"></i>
+                  </a>
+                  <a
+                    data-toggle="modal"
+                    data-target="#modal_{{listask.id}}_delete_global"
+                    style="cursor: pointer;"
+                    title="Delete"
+                  >
+                    <i
+                      class="fa-sharp fa-solid fa-trash fa-lg"
+                      style="color: red"
+                    ></i>
+                  </a>
+                  {% include 'includes/delete_modal.html' with obj=listask %}
+                </td>
+              </tr>
+            </tbody>
+            {% endfor %}
+          </table>
+          <div class="row justify-content-end">
+            <div class="col-lg-6">
+              <ul class="pagination">
+                <!-- only works if have previous values -->
+                {% if listasks.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="/?page=1" tabindex="-1">First</a>
+                </li>
+                <li class="page-item">
+                  <a
+                    class="page-link"
+                    href="/?page={{listasks.previous_page_number}}"
+                    tabindex="-1"
+                    >Previous</a
+                  >
+                </li>
+                {% endif %} {% for n in totalTask %}
+                {% if n == listasks.number %}
+                <li class="page-item">
+                  <a class="page-link bg-secondary" href="/?page={{n}}">{{n}}</a>
+                </li>
+                {% else %}
+                <li class="page-item">
+                  <a class="page-link" href="/?page={{n}}">{{n}}</a>
+                </li>
+                {% endif %}
+                {% endfor %} {% if listasks.has_next%}
+                <li class="page-item">
+                  <a
+                    class="page-link"
+                    href="/?page={{listasks.next_page_number}}"
+                    >Next</a
+                  >
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="/?page={{lastpage}}">Last</a>
+                </li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
